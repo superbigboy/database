@@ -1,0 +1,97 @@
+--外连接 outer join
+--左外连接时左面的是主表，当主表和右侧表中没有匹配项的时候和右侧表的空行匹配
+select student.*,cno,grade
+from student left outer join sc
+--外连接不是where而是on
+on student.sno=sc.sno
+
+
+--右外连接时右侧表为主表
+select sc.*,cname,cpno,ccredit
+from sc right outer join course
+on sc.cno=course.cno
+--上下两段代码等价
+select sc.*,cname,cpno,ccredit
+from sc,course
+where sc.cno=course.cno
+
+
+--查询选修二号课程的成绩在90分以上的学生的姓名和学号
+select sc.sno,sname
+from sc,student
+where grade>90 and sc.cno='2' and sc.sno=student.sno
+
+--查询每一个学生的学号姓名，选修的课程名以及成绩
+select student.sno,sname,cname,grade
+from sc,student,course
+where student.sno=sc.sno and sc.cno=course.cno 
+
+
+--嵌套查询中子查询不可以使用order by 语句，分类为相关子查询和不相关子查询
+
+--查询与刘晨在同一个系学习的学生
+select *
+from student
+where sdept in
+(	
+	select sdept
+	form student
+	where sname='刘晨'
+)
+
+--查询内容为空值时用is
+--select *
+--from student
+--where ssex is null
+
+--查询选修了课程名为信息系统的学生号和姓名
+select sno,sname
+from student
+where sno in
+(
+	select sno
+	from sc
+	where cno in
+	(
+		select cno
+		from course
+		where cname='信息系统'
+	)
+)
+
+
+--数据更新
+insert into student(sno,sname,ssex,sage,sdept)
+values('201215128','陈东','男','18','IS')
+--列名和数据相应对应上就好，顺序改变可以
+
+--插入数据值按照原有表的列属性顺序即可
+insert into student
+values('201215129','张成民','18','男','CS')
+
+insert into student (sno,sname,sdept)
+values('201215130','郭靖','CS')
+
+--设置年龄字段为空
+insert into student(sno,sname,sage,ssex,sdept)
+values('201215131','杨康','NULL','男','IS')
+
+--性别字段不明的设置方式
+insert into student(sno,sname,sage,ssex,sdept)
+values('201215132','黄蓉','17','','MA')
+
+--查询性别为空的学生
+select *
+from student
+where ssex is null
+
+create table dept_avg
+(
+	sdept char(15),
+	sage_avg int
+);
+
+insert into dept_avg
+select sdept,AVG(sage)
+from student
+group by sdept

@@ -1,0 +1,130 @@
+--查询
+
+select sno,sname,sdept
+from student
+
+--查询所有
+select *
+from student
+
+select COUNT(sno) as sum
+from student
+
+select COUNT(ssex) as 人数   --不统计空值
+from student
+
+--由于distinct导致输出结果为2
+select COUNT(distinct ssex) as 人数
+from student
+
+--添加新的一列，并更名为入学年份
+select sno,sname,'2015' as 入学年份
+from student
+
+--查询是不会破坏原始数据的
+select '学号' as '学号',sno, '姓名' as 姓名,sname,'2015' as 年份
+from student
+
+--查询选课内容（包含重复内容）
+--什么都不写默认为select all sno
+select sno
+from sc
+
+--不包括重复内容，结果为正确
+select distinct sno
+from sc
+
+--用where去掉行，筛选出不符合条件的行进行删除
+--查询年龄在20岁以下的学生的学号、姓名和年龄
+select sno,sname,sage
+from student
+where sage<20
+--where not sage>=20二者功能相同  
+
+--查询性别为女的学生的姓名和学号
+select sno,sname
+from student
+where ssex='女'
+
+--查询学分为4的课程的名字
+select cname
+from course
+where ccredit = 4
+
+--查询成绩在85分以上的学生的学号
+select distinct sno
+from sc
+where grade>=85
+
+--查询年龄在20-23之间的所有学生的姓名和学号  x<=y<=z  不要用这个玩意扯犊子
+select sno,sname,sage
+from student
+where sage between 20 and 23
+
+select sno,sname,sdept
+from student
+where sdept in('CS','IS')
+
+--查询姓欧阳且全名为三个字符的学生的名字
+select sname
+from student
+where sname like '欧阳__'
+
+--查询所有姓刘的同学的姓名学号和年龄
+select sno, sname,sage
+from student
+where sname like '刘%'
+
+--按性别降序排序
+select sno,sname,sage,ssex
+from student
+order by ssex desc
+
+--聚集函数统计一共有多少人
+select COUNT(*)
+from student 
+
+select COUNT(sno)
+from sc
+where cno='1'
+
+--查询选修了课程的学生人数
+select COUNT(distinct sno)
+from sc
+
+--查询课程号为1的平均成绩
+select AVG(grade) as 平均成绩
+from sc
+where cno='1'
+
+--查询性别为空的学生的学号、姓名、性别
+select sno,sname,ssex
+from student
+where ssex is null
+
+--按课程号查询分组
+select cno, COUNT(sno)
+from sc
+group by cno
+
+--筛选出选课数大于等于2的组
+select cno, COUNT(sno)
+from sc
+group by cno having COUNT(*)>= 2
+
+--多表连接查询
+select student.* ,sc.*
+from student,sc
+where student.sno=sc.sno
+
+select student.sno,sname,sage,ssex,sdept,cno,grade
+from student,sc
+where student.sno=sc.sno
+
+--求课程的间接先修课（先修课的先修课）
+select first.cno, second.cpno
+--错误在于两张course表不能区分开
+--from course,course
+--给表起别名即可解决问题
+from course first,course second
+where first.cpno = second.cno
