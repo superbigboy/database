@@ -1,0 +1,35 @@
+--创建数据库
+create database student
+--切换数据库
+use student
+--创建模式
+create schema s_t
+
+--创建学生表
+create table student
+(
+	sno char(9),
+	sanme char(10) unique,
+	ssex char(2),
+	sage smallint,
+	sdept varchar(20)	
+);
+--创建课程表
+create table course
+(
+	cno char(4) primary key,
+	cname char(20) not null,
+	cpno char(4),
+	ccredit smallint,
+	foreign key (cpno) references course (cno)
+);
+--创建学生选课表
+create table sc
+(
+	sno char(9),
+	cno char(4),
+	grade int,
+	primary key(sno,cno),
+	foreign key(sno) references student(sno),
+	foreign key(cno) references course(cno)
+);
