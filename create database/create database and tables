@@ -23,7 +23,6 @@ create table course
 	ccredit smallint,
 	foreign key (cpno) references course (cno)
 );
---创建学生选课表
 create table sc
 (
 	sno char(9),
