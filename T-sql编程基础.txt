@@ -1,24 +1,23 @@
---µÚ°ËÕÂT-sql±à³Ì»ù´¡
-
+--ç¬¬å…«ç« T-sqlç¼–ç¨‹åŸºç¡€
 declare @myvar char(20)
---¸³ÖµÇ°±ØĞë¼Óset
+--èµ‹å€¼å‰å¿…é¡»åŠ set
 set @myvar = 'This is a test@!'
 select @myvar
 
---ÉùÃ÷Á½¸ö±äÁ¿£¬ÖĞ¼äÓÃ¶ººÅÇø·Ö£»²»ÄÜÔÙÉùÃ÷µÄÊ±ºòÖ±½Ó¸³³õÖµ
+--å£°æ˜ä¸¤ä¸ªå˜é‡ï¼Œä¸­é—´ç”¨é€—å·åŒºåˆ†ï¼›ä¸èƒ½å†å£°æ˜çš„æ—¶å€™ç›´æ¥èµ‹åˆå€¼
 declare @var1 char(15),@var2 date
-set @var2 = GETDATE()    --»ñÈ¡½ñÌìµÄÈÕÆÚ
+set @var2 = GETDATE()    --è·å–ä»Šå¤©çš„æ—¥æœŸ
 set @var1 = convert (char(15),@var2,102)
-print 'µ±Ç°µÄÈÕÆÚÊÇ'+@var1
---setÖ»ÄÜ¶Ôµ¥¸ö¾Ö²¿±äÁ¿¸³³õÖµ£¬selectÒ²¿ÉÒÔ¸³³õÖµ £¬t-sqlÖĞ¸³³õÖµ±ØĞëÓĞset
+print 'å½“å‰çš„æ—¥æœŸæ˜¯'+@var1
+--setåªèƒ½å¯¹å•ä¸ªå±€éƒ¨å˜é‡èµ‹åˆå€¼ï¼Œselectä¹Ÿå¯ä»¥èµ‹åˆå€¼ ï¼Œt-sqlä¸­èµ‹åˆå€¼å¿…é¡»æœ‰set
 
---È«¾Ö±äÁ¿(·ÛÉ«)Ö»ÔÊĞíÊ¹ÓÃ£¬²»ÔÊĞíÓÃ»§×Ô¼º¶¨Òå£¬ÓÉ·şÎñÆ÷¶Ë¶¨ÒåºÃµÄÖ»ÄÜÊ¹ÓÃ£¬±ØĞëÒÔË«@¿ªÍ·
-print @@version      --´òÓ¡sql°æ±¾
-print @@servername    --´òÓ¡·şÎñÆ÷Ãû³Æ
-print @@servicename   --´òÓ¡·şÎñµÄÃû×Ö
+--å…¨å±€å˜é‡(ç²‰è‰²)åªå…è®¸ä½¿ç”¨ï¼Œä¸å…è®¸ç”¨æˆ·è‡ªå·±å®šä¹‰ï¼Œç”±æœåŠ¡å™¨ç«¯å®šä¹‰å¥½çš„åªèƒ½ä½¿ç”¨ï¼Œå¿…é¡»ä»¥åŒ@å¼€å¤´
+print @@version      --æ‰“å°sqlç‰ˆæœ¬
+print @@servername    --æ‰“å°æœåŠ¡å™¨åç§°
+print @@servicename   --æ‰“å°æœåŠ¡çš„åå­—
 
---²éÑ¯ÓĞÃ»ÓĞÑ§ºÅÎª201215120µÄÑ§Éú£¬ÓĞµÄ»°ÏÔÊ¾Ñ§ÉúĞÅÏ¢£¬Ã»ÓĞµÄ»°ÏÔÊ¾Ã»ÕÒµ½
---µ¥·ÖÖ§»òÊÇË«·ÖÖ§
+--æŸ¥è¯¢æœ‰æ²¡æœ‰å­¦å·ä¸º201215120çš„å­¦ç”Ÿï¼Œæœ‰çš„è¯æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯ï¼Œæ²¡æœ‰çš„è¯æ˜¾ç¤ºæ²¡æ‰¾åˆ°
+--å•åˆ†æ”¯æˆ–æ˜¯åŒåˆ†æ”¯
 if exists
 	(
 	select *
@@ -30,29 +29,29 @@ begin
 	from student
 	where sno='201215120'
 end
-	print 'Ã»ÕÒµ½£¡'
+	print 'æ²¡æ‰¾åˆ°ï¼'
 	
---¶à·ÖÖ§   caseÓï¾ä
---´ÓÑ§Éú±ístudentÖĞ£¬Ñ¡È¡sno£¬ssex£¬Èç¹ûssexÎªÄĞÊä³öm£¬ÎªÅ®Êä³öf
+--å¤šåˆ†æ”¯   caseè¯­å¥
+--ä»å­¦ç”Ÿè¡¨studentä¸­ï¼Œé€‰å–snoï¼Œssexï¼Œå¦‚æœssexä¸ºç”·è¾“å‡ºmï¼Œä¸ºå¥³è¾“å‡ºf
 select sno,ssex=
 		case ssex
-			when 'ÄĞ' then 'M'
-			when 'Å®' then 'F'
+			when 'ç”·' then 'M'
+			when 'å¥³' then 'F'
 		end
 from student
 
---´Ósc±íÖĞ²éÑ¯ËùÓĞÍ¬Ñ§µÄÑ¡¿Î³É¼¨£¬³É¼¨Îª¿ÕÊä³öÎ´¿¼ÊÔ£¬Ğ¡ÓÚ60Êä³ö²»¼°¸ñ£¬Ğ¡ÓÚÆäÊµÊä³ö¼¸¸ö£¬Ğ¡ÓÚ90Êä³öÁ¼ºÃ£¬´óÓÚ90Êä³öÓÅĞã
+--ä»scè¡¨ä¸­æŸ¥è¯¢æ‰€æœ‰åŒå­¦çš„é€‰è¯¾æˆç»©ï¼Œæˆç»©ä¸ºç©ºè¾“å‡ºæœªè€ƒè¯•ï¼Œå°äº60è¾“å‡ºä¸åŠæ ¼ï¼Œå°äºå…¶å®è¾“å‡ºå‡ ä¸ªï¼Œå°äº90è¾“å‡ºè‰¯å¥½ï¼Œå¤§äº90è¾“å‡ºä¼˜ç§€
 select sno,cno,grade=
-				case
-					when grade is null then 'Î´¿¼ÊÔ'
-					when grade<60 then '²»¼°¸ñ'
-					when grade<70 then '¼°¸ñ'
-					when grade<90 then 'Á¼ºÃ'
-					when grade>=90 then 'ÓÅĞã'
-				end
+			case
+				when grade is null then 'æœªè€ƒè¯•'
+				when grade<60 then 'ä¸åŠæ ¼'
+				when grade<70 then 'åŠæ ¼'
+				when grade<90 then 'è‰¯å¥½'
+				when grade>=90 then 'ä¼˜ç§€'
+			end
 from sc
 
---Ñ­»·½á¹¹
+--å¾ªç¯ç»“æ„
 declare @myvar1 int,@myvar2 int
 set @myvar1 = 0
 set @myvar2 = 1
@@ -80,12 +79,12 @@ print year(getdate())
 print month(getdate())
 print day(getdate())		
 
---·µ»ØÄêÁä£¨ÒÔÄêÎªÈÕÆÚ£©
+--è¿”å›å¹´é¾„ï¼ˆä»¥å¹´ä¸ºæ—¥æœŸï¼‰
 print datediff(yy,'1996-06-24',getdate())
 print datediff(mm,'1996-06-24',getdate())
 print datediff(dd,'1996-06-24',getdate())
 
---´òÓ¡asciiÂë
+--æ‰“å°asciiç 
 print ascii('ABCDEF1243')
 print char(65)
 
