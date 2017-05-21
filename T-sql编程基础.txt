@@ -1,0 +1,92 @@
+--第八章T-sql编程基础
+
+declare @myvar char(20)
+--赋值前必须加set
+set @myvar = 'This is a test@!'
+select @myvar
+
+--声明两个变量，中间用逗号区分；不能再声明的时候直接赋初值
+declare @var1 char(15),@var2 date
+set @var2 = GETDATE()    --获取今天的日期
+set @var1 = convert (char(15),@var2,102)
+print '当前的日期是'+@var1
+--set只能对单个局部变量赋初值，select也可以赋初值 ，t-sql中赋初值必须有set
+
+--全局变量(粉色)只允许使用，不允许用户自己定义，由服务器端定义好的只能使用，必须以双@开头
+print @@version      --打印sql版本
+print @@servername    --打印服务器名称
+print @@servicename   --打印服务的名字
+
+--查询有没有学号为201215120的学生，有的话显示学生信息，没有的话显示没找到
+--单分支或是双分支
+if exists
+	(
+	select *
+	from student
+	where sno='201215120'
+	)
+begin 
+	select *
+	from student
+	where sno='201215120'
+end
+	print '没找到！'
+	
+--多分支   case语句
+--从学生表student中，选取sno，ssex，如果ssex为男输出m，为女输出f
+select sno,ssex=
+		case ssex
+			when '男' then 'M'
+			when '女' then 'F'
+		end
+from student
+
+--从sc表中查询所有同学的选课成绩，成绩为空输出未考试，小于60输出不及格，小于其实输出几个，小于90输出良好，大于90输出优秀
+select sno,cno,grade=
+				case
+					when grade is null then '未考试'
+					when grade<60 then '不及格'
+					when grade<70 then '及格'
+					when grade<90 then '良好'
+					when grade>=90 then '优秀'
+				end
+from sc
+
+--循环结构
+declare @myvar1 int,@myvar2 int
+set @myvar1 = 0
+set @myvar2 = 1
+while @myvar2<=10
+	begin
+		set @myvar1 = @myvar1 + @myvar2
+		set @myvar2 +=1
+	end
+		print @myvar1
+		
+	
+declare @sum int,@num int
+set @sum = 0
+set @num = 0
+--select @sum = 0,@num = 0
+while(@num<10)
+	begin 
+		set @num = @num+1
+		set @sum = @sum+@num
+	end
+		print 'sum='+convert(char(2),@sum)
+		
+		
+print year(getdate())
+print month(getdate())
+print day(getdate())		
+
+--返回年龄（以年为日期）
+print datediff(yy,'1996-06-24',getdate())
+print datediff(mm,'1996-06-24',getdate())
+print datediff(dd,'1996-06-24',getdate())
+
+--打印ascii码
+print ascii('ABCDEF1243')
+print char(65)
+
+print substring ('201215121',0,4)
